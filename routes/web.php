@@ -8,3 +8,6 @@ use Illuminate\Support\Facades\Route;
 Route::resource('blogs', BlogController::class);
 Route::resource('blog-categories', BlogCategoryController::class);
 Route::resource('blog-comments', BlogCommentController::class);
+Route::get('/', function () {
+    return view('index');
+});
