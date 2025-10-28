@@ -24,3 +24,4 @@ yarn-error.log
 
 .vercel
 "// Commit berikutnya akan fokus pada fitur Filament CRUD"  
+"// Commit berikutnya akan fokus pada konfigurasi otorisasi"  
