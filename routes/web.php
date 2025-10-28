@@ -4,6 +4,14 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 
+<?php
+
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\BlogCategoryController;
+use App\Http\Controllers\BlogCommentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,5 +31,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 });
 
+// API-like routes for blog resources (non-authenticated)
+Route::resource('blogs', BlogController::class);
+Route::resource('blog-categories', BlogCategoryController::class);
+Route::resource('blog-comments', BlogCommentController::class);
 
 require __DIR__.'/auth.php';
