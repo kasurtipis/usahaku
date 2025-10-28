@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\BlogCategoryController;
 use App\Http\Controllers\Api\BlogCommentController;
 use App\Http\Controllers\Api\BlogController;
+use App\Http\Middleware\CorsMiddleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('v1')->group(function () {
+Route::prefix('v1')->middleware([CorsMiddleware::class])->group(function () {
     // Blog Category routes
     Route::apiResource('blog-categories', BlogCategoryController::class);
     
