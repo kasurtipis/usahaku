@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             BlogSeeder::class,
             BlogCommentSeeder::class,
         ]);
+        $this->call(RoleSeeder::class);
     }
 
 }
