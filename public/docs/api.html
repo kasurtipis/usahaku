@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UsahaKu API Documentation</title>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@latest/swagger-ui.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .swagger-ui .topbar {
+            background-color: #1f2937;
+            padding: 10px;
+        }
+        .swagger-ui .topbar .download-url-wrapper {
+            display: none;
+        }
+        .swagger-ui .info .title {
+            color: #4f46e5;
+        }
+    </style>
+</head>
+<body>
+    <div id="swagger-ui"></div>
+    
+    <script src="https://unpkg.com/swagger-ui-dist@latest/swagger-ui-bundle.js"></script>
+    <script>
+        SwaggerUIBundle({
+            url: './api.json',
+            dom_id: '#swagger-ui',
+            presets: [
+                SwaggerUIBundle.presets.apis,
+                SwaggerUIBundle.presets.standalone
+            ]
+        });
+    </script>
+</body>
+</html>

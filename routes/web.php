@@ -3,12 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-
-<?php
-
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BlogCategoryController;
 use App\Http\Controllers\BlogCommentController;
@@ -35,5 +29,14 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::resource('blogs', BlogController::class);
 Route::resource('blog-categories', BlogCategoryController::class);
 Route::resource('blog-comments', BlogCommentController::class);
+
+// API Documentation routes
+Route::get('/docs', function () {
+    return redirect('/docs/index.html');
+});
+
+Route::get('/docs/api', function () {
+    return redirect('/docs/api.html');
+});
 
 require __DIR__.'/auth.php';

@@ -1,0 +1,1317 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "UsahaKu API",
+    "description": "API Documentation for UsahaKu Blog Platform",
+    "version": "1.0.0",
+    "contact": {
+      "name": "API Support",
+      "email": "support@usahaku.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/api/v1",
+      "description": "Development server"
+    },
+    {
+      "url": "https://usahaku.com/api/v1",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/blog-categories": {
+      "get": {
+        "summary": "Get all blog categories",
+        "description": "Retrieve a paginated list of blog categories",
+        "tags": ["Blog Categories"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BlogCategory"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/PaginationLinks"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new blog category",
+        "description": "Create a new blog category. Requires authentication.",
+        "tags": ["Blog Categories"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["username", "subdomain", "title", "slug"],
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "admin"
+                  },
+                  "subdomain": {
+                    "type": "string",
+                    "example": "main"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Technology"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "example": "technology"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Category created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlogCategory"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blog-categories/{id}": {
+      "get": {
+        "summary": "Get a specific blog category",
+        "description": "Retrieve a specific blog category by ID",
+        "tags": ["Blog Categories"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blog category ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "username": {
+                      "type": "string",
+                      "example": "admin"
+                    },
+                    "subdomain": {
+                      "type": "string",
+                      "example": "main"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Technology"
+                    },
+                    "slug": {
+                      "type": "string",
+                      "example": "technology"
+                    },
+                    "blogs": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Blog"
+                      }
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-10-28T10:00:00.000000Z"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-10-28T10:00:00.000000Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a blog category",
+        "description": "Update an existing blog category. Requires authentication.",
+        "tags": ["Blog Categories"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blog category ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string",
+                    "example": "admin"
+                  },
+                  "subdomain": {
+                    "type": "string",
+                    "example": "main"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Updated Technology"
+                  },
+                  "slug": {
+                    "type": "string",
+                    "example": "updated-technology"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Category updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlogCategory"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Category not found"
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a blog category",
+        "description": "Delete an existing blog category. Requires authentication.",
+        "tags": ["Blog Categories"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blog category ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Category deleted successfully"
+          },
+          "404": {
+            "description": "Category not found"
+          }
+        }
+      }
+    },
+    "/blogs": {
+      "get": {
+        "summary": "Get all blogs",
+        "description": "Retrieve a paginated list of blogs",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Blog"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/PaginationLinks"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new blog",
+        "description": "Create a new blog post. Requires authentication.",
+        "tags": ["Blogs"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["slug", "subdomain", "username", "title", "blog_category_id", "author", "content"],
+                "properties": {
+                  "slug": {
+                    "type": "string",
+                    "example": "new-blog-post"
+                  },
+                  "subdomain": {
+                    "type": "string",
+                    "example": "main"
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "admin"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "New Blog Post"
+                  },
+                  "blog_category_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "author": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "This is the content of the blog post"
+                  },
+                  "meta_title": {
+                    "type": "string",
+                    "example": "New Blog Post"
+                  },
+                  "meta_description": {
+                    "type": "string",
+                    "example": "About this new blog post"
+                  },
+                  "visitor": {
+                    "type": "integer",
+                    "example": 0
+                  },
+                  "tag": {
+                    "type": "string",
+                    "example": "blog,news"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Blog created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Blog"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blogs/{id}": {
+      "get": {
+        "summary": "Get a specific blog",
+        "description": "Retrieve a specific blog by ID",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blog ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "slug": {
+                      "type": "string",
+                      "example": "new-blog-post"
+                    },
+                    "subdomain": {
+                      "type": "string",
+                      "example": "main"
+                    },
+                    "username": {
+                      "type": "string",
+                      "example": "admin"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "New Blog Post"
+                    },
+                    "blog_category_id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "author": {
+                      "type": "string",
+                      "example": "John Doe"
+                    },
+                    "content": {
+                      "type": "string",
+                      "example": "This is the content of the blog post"
+                    },
+                    "meta_title": {
+                      "type": "string",
+                      "example": "New Blog Post"
+                    },
+                    "meta_description": {
+                      "type": "string",
+                      "example": "About this new blog post"
+                    },
+                    "visitor": {
+                      "type": "integer",
+                      "example": 100
+                    },
+                    "tag": {
+                      "type": "string",
+                      "example": "blog,news"
+                    },
+                    "category": {
+                      "$ref": "#/components/schemas/BlogCategory"
+                    },
+                    "comments": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BlogComment"
+                      }
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-10-28T10:00:00.000000Z"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-10-28T10:00:00.000000Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Blog not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a blog",
+        "description": "Update an existing blog. Requires authentication.",
+        "tags": ["Blogs"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blog ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Updated Blog Title"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "Updated content"
+                  },
+                  "blog_category_id": {
+                    "type": "integer",
+                    "example": 2
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Blog updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Blog"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Blog not found"
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a blog",
+        "description": "Delete an existing blog. Requires authentication.",
+        "tags": ["Blogs"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blog ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Blog deleted successfully"
+          },
+          "404": {
+            "description": "Blog not found"
+          }
+        }
+      }
+    },
+    "/blogs/category/{category}": {
+      "get": {
+        "summary": "Get blogs by category",
+        "description": "Retrieve blogs filtered by category ID",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "description": "Category ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Blog"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/PaginationLinks"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blogs/author/{author}": {
+      "get": {
+        "summary": "Get blogs by author",
+        "description": "Retrieve blogs filtered by author",
+        "tags": ["Blogs"],
+        "parameters": [
+          {
+            "name": "author",
+            "in": "path",
+            "description": "Author name",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Blog"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/PaginationLinks"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blog-comments": {
+      "get": {
+        "summary": "Get all blog comments",
+        "description": "Retrieve a paginated list of blog comments",
+        "tags": ["Blog Comments"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BlogComment"
+                      }
+                    },
+                    "links": {
+                      "$ref": "#/components/schemas/PaginationLinks"
+                    },
+                    "meta": {
+                      "$ref": "#/components/schemas/PaginationMeta"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new blog comment",
+        "description": "Create a new blog comment",
+        "tags": ["Blog Comments"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["blog_id", "username", "subdomain", "content"],
+                "properties": {
+                  "blog_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "username": {
+                    "type": "string",
+                    "example": "commenter"
+                  },
+                  "subdomain": {
+                    "type": "string",
+                    "example": "main"
+                  },
+                  "title": {
+                    "type": "string",
+                    "example": "Great post!"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "commenter@example.com"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "Thanks for sharing"
+                  },
+                  "reply": {
+                    "type": "integer",
+                    "nullable": true,
+                    "example": null
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Comment created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlogComment"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blog-comments/{id}": {
+      "get": {
+        "summary": "Get a specific blog comment",
+        "description": "Retrieve a specific blog comment by ID",
+        "tags": ["Blog Comments"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blog comment ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "blog_id": {
+                      "type": "integer",
+                      "example": 1
+                    },
+                    "username": {
+                      "type": "string",
+                      "example": "commenter"
+                    },
+                    "subdomain": {
+                      "type": "string",
+                      "example": "main"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Great post!"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "example": "commenter@example.com"
+                    },
+                    "content": {
+                      "type": "string",
+                      "example": "Thanks for sharing"
+                    },
+                    "reply": {
+                      "type": "integer",
+                      "nullable": true,
+                      "example": null
+                    },
+                    "blog": {
+                      "$ref": "#/components/schemas/Blog"
+                    },
+                    "parent": {
+                      "$ref": "#/components/schemas/BlogComment"
+                    },
+                    "replies": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/BlogComment"
+                      }
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-10-28T11:00:00.000000Z"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2024-10-28T11:00:00.000000Z"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Comment not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a blog comment",
+        "description": "Update an existing blog comment. Requires authentication.",
+        "tags": ["Blog Comments"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blog comment ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": {
+                    "type": "string",
+                    "example": "Updated comment"
+                  },
+                  "content": {
+                    "type": "string",
+                    "example": "Updated content of the comment"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Comment updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlogComment"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Comment not found"
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a blog comment",
+        "description": "Delete an existing blog comment. Requires authentication.",
+        "tags": ["Blog Comments"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Blog comment ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Comment deleted successfully"
+          },
+          "404": {
+            "description": "Comment not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "BlogCategory": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "username": {
+            "type": "string",
+            "example": "admin"
+          },
+          "subdomain": {
+            "type": "string",
+            "example": "main"
+          },
+          "title": {
+            "type": "string",
+            "example": "Technology"
+          },
+          "slug": {
+            "type": "string",
+            "example": "technology"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-10-28T10:00:00.000000Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-10-28T10:00:00.000000Z"
+          }
+        }
+      },
+      "Blog": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "slug": {
+            "type": "string",
+            "example": "new-blog-post"
+          },
+          "subdomain": {
+            "type": "string",
+            "example": "main"
+          },
+          "username": {
+            "type": "string",
+            "example": "admin"
+          },
+          "title": {
+            "type": "string",
+            "example": "New Blog Post"
+          },
+          "blog_category_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "author": {
+            "type": "string",
+            "example": "John Doe"
+          },
+          "content": {
+            "type": "string",
+            "example": "This is the content of the blog post"
+          },
+          "meta_title": {
+            "type": "string",
+            "example": "New Blog Post"
+          },
+          "meta_description": {
+            "type": "string",
+            "example": "About this new blog post"
+          },
+          "visitor": {
+            "type": "integer",
+            "example": 100
+          },
+          "tag": {
+            "type": "string",
+            "example": "blog,news"
+          },
+          "image": {
+            "type": "string",
+            "example": "/storage/blogs/image.jpg",
+            "nullable": true
+          },
+          "category": {
+            "$ref": "#/components/schemas/BlogCategory"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-10-28T10:00:00.000000Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-10-28T10:00:00.000000Z"
+          }
+        }
+      },
+      "BlogComment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "blog_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "username": {
+            "type": "string",
+            "example": "commenter"
+          },
+          "subdomain": {
+            "type": "string",
+            "example": "main"
+          },
+          "title": {
+            "type": "string",
+            "example": "Great post!"
+          },
+          "slug": {
+            "type": "string",
+            "example": "great-post"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+1234567890",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "commenter@example.com"
+          },
+          "content": {
+            "type": "string",
+            "example": "Thanks for sharing"
+          },
+          "reply": {
+            "type": "integer",
+            "nullable": true,
+            "example": null
+          },
+          "blog": {
+            "$ref": "#/components/schemas/Blog"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-10-28T11:00:00.000000Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-10-28T11:00:00.000000Z"
+          }
+        }
+      },
+      "PaginationLinks": {
+        "type": "object",
+        "properties": {
+          "first": {
+            "type": "string",
+            "nullable": true,
+            "example": "/api/v1/blogs?page=1"
+          },
+          "last": {
+            "type": "string",
+            "nullable": true,
+            "example": "/api/v1/blogs?page=10"
+          },
+          "prev": {
+            "type": "string",
+            "nullable": true,
+            "example": "/api/v1/blogs?page=1"
+          },
+          "next": {
+            "type": "string",
+            "nullable": true,
+            "example": "/api/v1/blogs?page=2"
+          }
+        }
+      },
+      "PaginationMeta": {
+        "type": "object",
+        "properties": {
+          "current_page": {
+            "type": "integer",
+            "example": 1
+          },
+          "from": {
+            "type": "integer",
+            "example": 1
+          },
+          "last_page": {
+            "type": "integer",
+            "example": 10
+          },
+          "path": {
+            "type": "string",
+            "example": "/api/v1/blogs"
+          },
+          "per_page": {
+            "type": "integer",
+            "example": 10
+          },
+          "to": {
+            "type": "integer",
+            "example": 10
+          },
+          "total": {
+            "type": "integer",
+            "example": 100
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "example": "The given data was invalid."
+          },
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "example": {
+              "title": [
+                "The title field is required."
+              ]
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}

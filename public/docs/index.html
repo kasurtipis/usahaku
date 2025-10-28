@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UsahaKu API Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8fafc;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        h2 {
+            color: #4f46e5;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+        
+        h3 {
+            color: #4f46e5;
+            margin: 1.5rem 0 1rem 0;
+            font-size: 1.4rem;
+        }
+        
+        p {
+            margin-bottom: 1rem;
+            line-height: 1.7;
+        }
+        
+        .endpoint {
+            background-color: #f1f5f9;
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            border-left: 4px solid #4f46e5;
+        }
+        
+        .method {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+        }
+        
+        .get {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+        
+        .post {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .put {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+        
+        .delete {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        
+        .auth-required {
+            background-color: #f3e8ff;
+            color: #7e22ce;
+            padding: 0.25rem 0.75rem;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+        
+        code {
+            background-color: #f1f5f9;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        pre {
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        .links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #4f46e5;
+            color: #4f46e5;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: #64748b;
+            margin-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .links {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>UsahaKu API Documentation</h1>
+            <p class="subtitle">Documentation and interactive API exploration for UsahaKu Blog Platform</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="card">
+            <h2>Welcome to UsahaKu API</h2>
+            <p>UsahaKu API provides a complete interface for managing blog content, categories, and comments in our multi-tenant blog platform. This API follows RESTful principles and returns JSON responses.</p>
+            
+            <h3>Base URL</h3>
+            <p>All API requests should be made to the following base URL:</p>
+            <pre><code>https://yourdomain.com/api/v1</code></pre>
+            
+            <h3>Authentication</h3>
+            <p>Some endpoints require authentication using a Bearer token. Include your API token in the Authorization header:</p>
+            <pre><code>Authorization: Bearer YOUR_API_TOKEN</code></pre>
+            <p>Endpoints marked with <span class="auth-required">Auth Required</span> require authentication.</p>
+        </div>
+        
+        <div class="card">
+            <h2>Blog Categories API</h2>
+            <p>Manage blog categories in your application.</p>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span> <code>/blog-categories</code>
+                    <span class="auth-required">Auth Required</span>
+                </div>
+                <p>Retrieve a paginated list of blog categories.</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method post">POST</span> <code>/blog-categories</code>
+                    <span class="auth-required">Auth Required</span>
+                </div>
+                <p>Create a new blog category.</p>
+                <p><strong>Required fields:</strong> username, subdomain, title, slug</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span> <code>/blog-categories/{id}</code>
+                </div>
+                <p>Retrieve a specific blog category by ID.</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method put">PUT</span> <code>/blog-categories/{id}</code>
+                    <span class="auth-required">Auth Required</span>
+                </div>
+                <p>Update an existing blog category.</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method delete">DELETE</span> <code>/blog-categories/{id}</code>
+                    <span class="auth-required">Auth Required</span>
+                </div>
+                <p>Delete an existing blog category.</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Blogs API</h2>
+            <p>Manage blog posts in your application.</p>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span> <code>/blogs</code>
+                </div>
+                <p>Retrieve a paginated list of blogs.</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method post">POST</span> <code>/blogs</code>
+                    <span class="auth-required">Auth Required</span>
+                </div>
+                <p>Create a new blog post.</p>
+                <p><strong>Required fields:</strong> slug, subdomain, username, title, blog_category_id, author, content</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span> <code>/blogs/{id}</code>
+                </div>
+                <p>Retrieve a specific blog by ID.</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method put">PUT</span> <code>/blogs/{id}</code>
+                    <span class="auth-required">Auth Required</span>
+                </div>
+                <p>Update an existing blog.</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method delete">DELETE</span> <code>/blogs/{id}</code>
+                    <span class="auth-required">Auth Required</span>
+                </div>
+                <p>Delete an existing blog.</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span> <code>/blogs/category/{category}</code>
+                </div>
+                <p>Retrieve blogs filtered by category ID.</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span> <code>/blogs/author/{author}</code>
+                </div>
+                <p>Retrieve blogs filtered by author.</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Blog Comments API</h2>
+            <p>Manage comments on blog posts.</p>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span> <code>/blog-comments</code>
+                </div>
+                <p>Retrieve a paginated list of blog comments.</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method post">POST</span> <code>/blog-comments</code>
+                </div>
+                <p>Create a new blog comment.</p>
+                <p><strong>Required fields:</strong> blog_id, username, subdomain, content</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method get">GET</span> <code>/blog-comments/{id}</code>
+                </div>
+                <p>Retrieve a specific blog comment by ID.</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method put">PUT</span> <code>/blog-comments/{id}</code>
+                    <span class="auth-required">Auth Required</span>
+                </div>
+                <p>Update an existing blog comment.</p>
+            </div>
+            
+            <div class="endpoint">
+                <div>
+                    <span class="method delete">DELETE</span> <code>/blog-comments/{id}</code>
+                    <span class="auth-required">Auth Required</span>
+                </div>
+                <p>Delete an existing blog comment.</p>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Interactive Documentation</h2>
+            <p>Use our interactive API browser to explore and test the API endpoints directly from your browser.</p>
+            <div class="links">
+                <a href="/docs/api.html" class="btn">Interactive API Browser</a>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>Error Handling</h2>
+            <p>Our API returns standard HTTP status codes. Common error codes include:</p>
+            
+            <ul>
+                <li><strong>200 OK</strong> - Request successful</li>
+                <li><strong>201 Created</strong> - Resource successfully created</li>
+                <li><strong>204 No Content</strong> - Request successful, no content to return</li>
+                <li><strong>400 Bad Request</strong> - Request was malformed</li>
+                <li><strong>401 Unauthorized</strong> - Authentication required</li>
+                <li><strong>403 Forbidden</strong> - Access to resource denied</li>
+                <li><strong>404 Not Found</strong> - Resource doesn't exist</li>
+                <li><strong>422 Unprocessable Entity</strong> - Validation error</li>
+                <li><strong>500 Internal Server Error</strong> - Server error</li>
+            </ul>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>© 2025 UsahaKu. All rights reserved.</p>
+            <p>For support, please contact: api-support@usahaku.com</p>
+        </div>
+    </footer>
+</body>
+</html>
